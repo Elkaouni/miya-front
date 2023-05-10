@@ -1,0 +1,8 @@
+{
+    "enviName": "localhost",
+    "defaultLanguage": "en_US",
+    "supportedLanguages": ["en_US", "fr_FR", "jp_JP", "ar_AR"],
+    "serverUrl": "http://localhost",
+    "coreUrl": ":8080/app",
+    "googleSearchApiKey": ""
+}

@@ -1,0 +1,76 @@
+<div *ngIf="isOpen">
+    <div
+      [ngClass]="[
+        'fixed',
+        side + '-0',
+        'z-40',
+        'flex',
+        'h-full',
+        'w-[260px]',
+        'flex-none',
+        'flex-col',
+        'space-y-2',
+        'bg-[#202123]',
+        'p-2',
+        'text-[14px]',
+        'transition-all',
+        'sm:relative',
+        'sm:top-0'
+      ]"
+    >
+      <div class="flex items-center">
+        <button
+          class="text-sidebar flex w-[190px] flex-shrink-0 cursor-pointer select-none items-center gap-3 rounded-md border border-white/20 p-3 text-white transition-colors duration-200 hover:bg-gray-500/10"
+          (click)="handleCreateItem(); handleSearchTerm('')"
+        >
+          <app-icon-plus size="16" class="text-white" />
+          {{ addItemButtonTitle }}
+        </button>
+
+        <button
+          class="ml-2 flex flex-shrink-0 cursor-pointer items-center gap-3 rounded-md border border-white/20 p-3 text-sm text-white transition-colors duration-200 hover:bg-gray-500/10"
+          (click)="handleCreateFolder()"
+        >
+          <app-icon-folder-plus size="16" class="text-white" />
+        </button>
+      </div>
+      <app-search
+        [placeholder]="placeholder"
+        [searchTerm]="searchTerm"
+        (onSearch)="handleSearchTerm($event)"
+      ></app-search>
+
+      <div class="flex-grow overflow-auto">
+        <div *ngIf="items?.length > 0" class="flex border-b border-white/20 pb-2">
+          <ng-container *ngTemplateOutlet="folderComponent"></ng-container>
+        </div>
+
+        <ng-container *ngIf="items?.length > 0; else noData">
+          <div
+            class="pt-2"
+            (drop)="handleDrop($event)"
+            (dragover)="allowDrop($event)"
+            (dragenter)="highlightDrop($event)"
+            (dragleave)="removeHighlight($event)"
+          >
+            <ng-container *ngTemplateOutlet="itemComponent"></ng-container>
+          </div>
+        </ng-container>
+
+        <ng-template #noData>
+          <div class="mt-8 select-none text-center text-white opacity-50">
+            <app-icon-mist-off class="mx-auto mb-3" />
+            <span class="text-[14px] leading-normal">{{ noDataMessage }}</span>
+          </div>
+        </ng-template>
+      </div>
+
+      <ng-container *ngIf="footerComponent">
+        <ng-container *ngTemplateOutlet="footerComponent"></ng-container>
+      </ng-container>
+    </div>
+
+    <app-close-sidebar-button (click)="toggleOpen()" [side]="side"></app-close-sidebar-button>
+  </div>
+
+  <app-open-sidebar-button *ngIf="!isOpen" (click)="toggleOpen()" [side]="side"></app-open-sidebar-button>
